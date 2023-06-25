@@ -21,18 +21,36 @@ const filter_reducer = (state, action) => {
     return { ...state, filtered_products: [...state.all_products] };
   }
   if (action.type === SET_GRIDVIEW) {
-    return { ...state };
+    return { ...state, grid_view: true };
   }
   if (action.type === SET_LISTVIEW) {
-    return { ...state };
+    return { ...state, grid_view: false };
   }
   if (action.type === UPDATE_SORT) {
-    return { ...state };
-  }
-  if (action.type === UPDATE_FILTERS) {
-    return { ...state };
+    return { ...state, sort: action.payload };
   }
   if (action.type === SORT_PRODUCTS) {
+    const { sort, filtered_products: products } = state;
+    let tempProducts = [];
+    switch (sort) {
+      case "price-lowest":
+        tempProducts = products.sort((a, b) => a.price - b.price);
+        break;
+      case "price-highest":
+        tempProducts = products.sort((a, b) => b.price - a.price);
+        break;
+      case "name-a":
+        tempProducts = products.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case "name-z":
+        tempProducts = products.sort((a, b) => b.name.localeCompare(a.name));
+        break;
+      default:
+        tempProducts = [...products];
+    }
+    return { ...state, filtered_products: tempProducts };
+  }
+  if (action.type === UPDATE_FILTERS) {
     return { ...state };
   }
   if (action.type === FILTER_PRODUCTS) {
