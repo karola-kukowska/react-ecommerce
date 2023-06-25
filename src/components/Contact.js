@@ -12,8 +12,13 @@ const Contact = () => {
             tempora neque autem sit nisi optio aspernatur, at dicta officiis
             iusto?
           </p>
-          <form className="contact-form">
+          <form
+            className="contact-form"
+            method="POST"
+            action="https://formspree.io/f/maygwqpg"
+          >
             <input
+              name="_replyto"
               type="email"
               className="form-input"
               placeholder="enter email"
