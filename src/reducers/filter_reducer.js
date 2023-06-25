@@ -7,11 +7,39 @@ import {
   UPDATE_FILTERS,
   FILTER_PRODUCTS,
   CLEAR_FILTERS,
-} from '../actions'
+} from "../actions";
 
 const filter_reducer = (state, action) => {
-  return state
-  throw new Error(`No Matching "${action.type}" - action type`)
-}
+  if (action.type === LOAD_PRODUCTS) {
+    return {
+      ...state,
+      all_products: [...action.payload],
+      filtered_products: [...action.payload],
+    };
+  }
+  if (action.type === CLEAR_FILTERS) {
+    return { ...state, filtered_products: [...state.all_products] };
+  }
+  if (action.type === SET_GRIDVIEW) {
+    return { ...state };
+  }
+  if (action.type === SET_LISTVIEW) {
+    return { ...state };
+  }
+  if (action.type === UPDATE_SORT) {
+    return { ...state };
+  }
+  if (action.type === UPDATE_FILTERS) {
+    return { ...state };
+  }
+  if (action.type === SORT_PRODUCTS) {
+    return { ...state };
+  }
+  if (action.type === FILTER_PRODUCTS) {
+    return { ...state };
+  }
 
-export default filter_reducer
+  throw new Error(`No Matching "${action.type}" - action type`);
+};
+
+export default filter_reducer;
