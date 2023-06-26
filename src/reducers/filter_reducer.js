@@ -24,9 +24,6 @@ const filter_reducer = (state, action) => {
       },
     };
   }
-  if (action.type === CLEAR_FILTERS) {
-    return { ...state, filtered_products: [...state.all_products] };
-  }
   if (action.type === SET_GRIDVIEW) {
     return { ...state, grid_view: true };
   }
@@ -57,19 +54,23 @@ const filter_reducer = (state, action) => {
     }
     return { ...state, filtered_products: tempProducts };
   }
+  if (action.type === CLEAR_FILTERS) {
+    return {
+      ...state,
+      filters: {
+        ...state.filters,
+        text: "",
+        company: "all",
+        category: "all",
+        color: "all",
+        price: state.filters.max_price,
+        free_shipping: false,
+      },
+    };
+  }
   if (action.type === UPDATE_FILTERS) {
     const { name, value } = action.payload;
     return { ...state, filters: { ...state.filters, [name]: value } };
-    // const { filtered_products: products } = state;
-    // let tempProducts = [];
-    // switch (name) {
-    //   case "text":
-    //     //
-    //     break;
-    //   default:
-    //     tempProducts = [...products];
-    // }
-    // return { ...state, filtered_products: tempProducts };
   }
   if (action.type === FILTER_PRODUCTS) {
     return { ...state };

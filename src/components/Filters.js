@@ -9,7 +9,16 @@ const Filters = () => {
     all_products,
     clearFilters,
     updateFilters,
-    filters: { text, category, min_price, max_price, price, free_shipping },
+    filters: {
+      text,
+      category,
+      company,
+      color,
+      min_price,
+      max_price,
+      price,
+      free_shipping,
+    },
   } = useFilterContext();
   const categories = getUniqueValues(all_products, "category");
   const companies = getUniqueValues(all_products, "company");
@@ -32,7 +41,7 @@ const Filters = () => {
             />
           </div>
           {/* end of search input */}
-          {/* categories */}
+          {/* category */}
           <div className="form-control">
             <h5>Category</h5>
             <div>
@@ -52,8 +61,101 @@ const Filters = () => {
               })}
             </div>
           </div>
-          {/* end of categories */}
+          {/* end of category */}
+          {/* company */}
+          <div className="form-control">
+            <h5>Company</h5>
+            <select
+              name="company"
+              id="company"
+              value={company}
+              className="company"
+              onChange={updateFilters}
+            >
+              {companies.map((c, index) => {
+                return (
+                  <option key={index} value={c}>
+                    {c}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          {/* end of company */}
+          {/* colors */}
+          <div className="form-control">
+            <h5>Colors</h5>
+            <div className="colors">
+              {colors.map((c, index) => {
+                if (c === "all") {
+                  return (
+                    <button
+                      name="color"
+                      key={index}
+                      onClick={updateFilters}
+                      data-color="all"
+                      value="all"
+                      className={`all-btn ${color === "all" ? "active" : ""}`}
+                    >
+                      all
+                    </button>
+                  );
+                }
+                return (
+                  <button
+                    key={index}
+                    style={{ backgroundColor: c }}
+                    className={c === color ? "color-btn active" : "color-btn"}
+                    name="color"
+                    value={c}
+                    onClick={updateFilters}
+                    // not sure if data-color is needed. value seems to work fine
+                    data-color={c}
+                  >
+                    {c === color ? <FaCheck /> : null}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+          {/* end of colors */}
+          {/* price */}
+          <div className="form-control">
+            <h5>price</h5>
+            <p className="price">{formatPrice(price)}</p>
+            <input
+              type="range"
+              name="price"
+              id="price"
+              onChange={updateFilters}
+              min={min_price}
+              max={max_price}
+              value={price}
+            />
+          </div>
+          {/* end of price */}
+          {/* shipping
+           */}{" "}
+          <div className="form-control shipping">
+            <label htmlFor="free_shipping">free shipping</label>
+            <input
+              onChange={updateFilters}
+              checked={free_shipping}
+              type="checkbox"
+              name="free_shipping"
+              id="free_shipping"
+            />
+          </div>
+          {/* end of shipping */}
         </form>
+        <button
+          type="button"
+          name="clear"
+          className="clear-btn"
+          onClick={clearFilters}
+        >
+          clear filters
+        </button>
       </div>
     </Wrapper>
   );
@@ -137,9 +239,8 @@ const Wrapper = styled.section`
     margin-bottom: 0.25rem;
   }
   .shipping {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    align-items: center;
+    display: flex;
+    align-items: stretch;
     text-transform: capitalize;
     column-gap: 0.5rem;
     font-size: 1rem;
