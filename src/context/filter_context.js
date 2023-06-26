@@ -17,6 +17,16 @@ const initialState = {
   all_products: [],
   grid_view: false,
   sort: "price-lowest",
+  filters: {
+    text: "",
+    company: "all",
+    category: "all",
+    color: "all",
+    min_price: 0,
+    max_price: 0,
+    price: 0,
+    free_shipping: false,
+  },
 };
 
 const FilterContext = React.createContext();
@@ -40,15 +50,36 @@ export const FilterProvider = ({ children }) => {
     dispatch({ type: SORT_PRODUCTS, payload: option });
   };
 
+  const updateFilters = (e) => {
+    const name = e.target.name;
+    let value = e.target.value;
+    //check if really needed -- button.value seems to work just fine
+    // if (name === "category") {
+    //   value = e.target.innerText;
+    // }
+    dispatch({ type: UPDATE_FILTERS, payload: { name, value } });
+  };
+  const clearFilters = () => {};
+
   useEffect(() => {
     dispatch({ type: LOAD_PRODUCTS, payload: products });
   }, [products]);
   useEffect(() => {
+    dispatch({ type: FILTER_PRODUCTS });
     dispatch({ type: SORT_PRODUCTS });
-  }, [state.sort, products]);
+  }, [state.sort, state.filters, products]);
+
   return (
     <FilterContext.Provider
-      value={{ ...state, showGridView, showListView, setSort, updateSort }}
+      value={{
+        ...state,
+        showGridView,
+        showListView,
+        setSort,
+        updateSort,
+        clearFilters,
+        updateFilters,
+      }}
     >
       {children}
     </FilterContext.Provider>

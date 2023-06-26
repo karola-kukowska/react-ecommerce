@@ -11,10 +11,17 @@ import {
 
 const filter_reducer = (state, action) => {
   if (action.type === LOAD_PRODUCTS) {
+    let maxPrice = Math.max(...action.payload.map((item) => item.price));
+
     return {
       ...state,
       all_products: [...action.payload],
       filtered_products: [...action.payload],
+      filters: {
+        ...state.filters,
+        max_price: maxPrice,
+        price: maxPrice,
+      },
     };
   }
   if (action.type === CLEAR_FILTERS) {
@@ -51,7 +58,18 @@ const filter_reducer = (state, action) => {
     return { ...state, filtered_products: tempProducts };
   }
   if (action.type === UPDATE_FILTERS) {
-    return { ...state };
+    const { name, value } = action.payload;
+    return { ...state, filters: { ...state.filters, [name]: value } };
+    // const { filtered_products: products } = state;
+    // let tempProducts = [];
+    // switch (name) {
+    //   case "text":
+    //     //
+    //     break;
+    //   default:
+    //     tempProducts = [...products];
+    // }
+    // return { ...state, filtered_products: tempProducts };
   }
   if (action.type === FILTER_PRODUCTS) {
     return { ...state };
