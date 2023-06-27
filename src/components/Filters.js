@@ -31,7 +31,7 @@ const Filters = () => {
           {/* search input */}
           <div className="form-control">
             <input
-              type="text"
+              type="search"
               name="text"
               id="text"
               placeholder="search"
